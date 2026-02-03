@@ -13,6 +13,10 @@ public class Node {
   /** The next node in the linked list. */
   public Node next;
 
+  public Node head;
+
+  public Node tail;
+
   /**
    * Creates a single node with the specified value.
    * prev and next are kept as null.
@@ -21,6 +25,8 @@ public class Node {
    */
   public Node(int value) {
     this.value = value;
+    this.prev = null;
+    this.next = null;
   }
 
   /**
@@ -38,9 +44,24 @@ public class Node {
    * @throws IllegalArgumentException If the list is null or empty.
    */
   public Node(List<Integer> list) {
-    // TODO: implement this
+    if (list == null || list.isEmpty()) {
+      throw new IllegalArgumentException();
+    }
+    
+    value = list.get(0);
+    prev = null;
+    next = null;
+    
+    Node current = this;
+    for (int i = 1; i < list.size(); i++) {
+      if (current != null) {
+        Node newNode = new Node(list.get(i));        
+        current.next = newNode; //link current's next with the new node
+        newNode.prev = current; //link current's prev with current
+        current = current.next;
+      }
+    }
   }
-
   /**
    * Converts the linked list starting from this node into a list of integers.
    * Treats this node as the head, even if it has a previous value.
