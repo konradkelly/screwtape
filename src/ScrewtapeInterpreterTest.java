@@ -106,10 +106,6 @@ class ScrewtapeInterpreterTest {
     // Assert
     assertEquals(expectedMap, actualMap);
   }
-
-  // TODO: Implement more tests for bracketMap
-  // At a bare minimum, implement the other examples from the Javadoc and at least one more you come up with
-
   
 
   @Test

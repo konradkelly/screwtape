@@ -150,8 +150,52 @@ public class ScrewtapeInterpreter {
    * @throws IllegalArgumentException If the program contains unmatched brackets.
    */
   public String execute(String program) {
-    // TODO: Implement this
-    // If you get stuck, you can look at hint.md for a hint
-    return null;
+    int idx = 0;
+    String outputString = "";
+    tapePointer = tapeHead;
+
+    Map<Integer, Integer> matchingIndices = bracketMap(program);
+
+    while (idx < program.length()) {
+      switch (program.charAt(idx)) {
+        case '+':
+          tapePointer.value += 1;
+          break;
+        case '-':
+          tapePointer.value -= 1;
+          break;
+        case '>':
+          if (tapePointer.next == null) {
+            tapePointer.next = new Node(0);
+            tapePointer.next.prev = tapePointer;
+          }
+          tapePointer = tapePointer.next;
+          break;
+        case '<':
+          if (tapePointer.prev == null) {
+            tapePointer.prev = new Node(0);
+            tapePointer.prev.next = tapePointer;
+            tapeHead = tapePointer.prev;
+          }
+          tapePointer = tapePointer.prev;
+          break;
+        case '.':
+          // Linked lists store ASCII characters as integers (eg. lowercase 'a' is the integer value of 97). 
+          char outputChar = (char) tapePointer.value; // we can use type-casting to convert int to char
+          outputString += outputChar;
+          break;
+        case ']':
+          if (tapePointer.value != 0) {
+            Integer openingIndex = matchingIndices.get(idx); //the index of the closing bracket is used as a key to retrieve the opening bracket's index
+            if (openingIndex == null) {
+              throw new IllegalArgumentException();
+            }
+            idx = openingIndex; // jump to opening bracket using index
+          }
+          break;
+      }
+      idx++; //increment index
+    }
+    return outputString;
   }
 }
