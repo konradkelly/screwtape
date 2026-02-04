@@ -23,6 +23,90 @@ class ScrewtapeInterpreterTest {
     assertEquals(expectedMap, actualMap);
   }
 
+  @Test
+  void testNestedBracketMap_withNonMatchingBraces() {
+    // Arrange
+    ScrewtapeInterpreter interpreter = new ScrewtapeInterpreter();
+    String program = ">[+>[+-]>]>[+++--]>[-";
+
+    // Act & Assert
+    assertThrows(IllegalArgumentException.class, () -> {
+      interpreter.bracketMap(program);
+    });
+  }
+
+  @Test
+  void testBracketMap_whenNotNested() {
+    // Arrange
+    ScrewtapeInterpreter interpreter = new ScrewtapeInterpreter();
+    String program = "[][-][+][-][+][]";
+
+    Map<Integer, Integer> expectedMap = new HashMap<>();
+    expectedMap.put(1, 0);
+    expectedMap.put(4, 2);
+    expectedMap.put(7, 5);
+    expectedMap.put(10, 8); 
+    expectedMap.put(13, 11);
+    expectedMap.put(15, 14);
+
+    // Act
+    Map<Integer, Integer> actualMap = interpreter.bracketMap(program);
+
+    // Assert
+    assertEquals(expectedMap, actualMap);
+  }
+
+  @Test
+  void testBracketMap_JavaDocExampleNonNested() {
+    // Arrange
+    ScrewtapeInterpreter interpreter = new ScrewtapeInterpreter();
+    String program = "[+++][---]<<[+]";
+
+    Map<Integer, Integer> expectedMap = new HashMap<>();
+    expectedMap.put(4, 0);
+    expectedMap.put(9, 5);
+    expectedMap.put(14, 12);
+
+    // Act
+    Map<Integer, Integer> actualMap = interpreter.bracketMap(program);
+
+    // Assert
+    assertEquals(expectedMap, actualMap);
+  }
+
+  @Test
+  void testBracketMap_JavaDocExampleWhenProgramIsEmpty() {
+    // Arrange
+    ScrewtapeInterpreter interpreter = new ScrewtapeInterpreter();
+    String program = "[]";
+
+    Map<Integer, Integer> expectedMap = new HashMap<>();
+    expectedMap.put(1, 0);
+
+    // Act
+    Map<Integer, Integer> actualMap = interpreter.bracketMap(program);
+
+    // Assert
+    assertEquals(expectedMap, actualMap);
+  }
+
+  @Test
+  void testBracketMap_JavaDocExampleWhenNested() {
+    // Arrange
+    ScrewtapeInterpreter interpreter = new ScrewtapeInterpreter();
+    String program = ">[+>[+-]<]";
+
+    Map<Integer, Integer> expectedMap = new HashMap<>();
+    expectedMap.put(9, 1);
+    expectedMap.put(7, 4);
+
+    // Act
+    Map<Integer, Integer> actualMap = interpreter.bracketMap(program);
+
+    // Assert
+    assertEquals(expectedMap, actualMap);
+  }
+
   // TODO: Implement more tests for bracketMap
   // At a bare minimum, implement the other examples from the Javadoc and at least one more you come up with
 

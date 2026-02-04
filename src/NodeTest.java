@@ -160,7 +160,7 @@ void testListConstructorWithFiveValues() {
     assertEquals(List.of(7, 3), values);
   }
   
-    @Test
+  @Test
   void testToListWithThreeValues_returnOnlyTheValueofTail() {
     // Arrange
     Node head = new Node(5);
